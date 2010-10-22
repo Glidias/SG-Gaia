@@ -19,6 +19,7 @@ package sg.gaiaframework.assets
 	import com.gaiaframework.events.AssetEvent;
 	import flash.text.Font;
 	import flash.utils.ByteArray;
+	import nl.demonsters.debugger.MonsterDebugger;
 	
 	import flash.display.Loader;
 	import flash.events.Event;

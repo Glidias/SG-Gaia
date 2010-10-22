@@ -1,5 +1,6 @@
 ﻿package sg.gaiaframework.utils 
 {
+	import com.gaiaframework.debug.GaiaDebug;
 	
 	/**
 	 * ...
@@ -8,9 +9,9 @@
 	public class VarUtil
 	{
 		public static function traceVars (obj:Object):void {
-			trace("Tracing vars:");
+			GaiaDebug.log("Tracing vars:");
 			for (var i:String in obj) {
-				trace (i + ": " + obj[i]);
+				GaiaDebug.log(i + ": " + obj[i]);
 			}
 		}
 		

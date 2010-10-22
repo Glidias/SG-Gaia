@@ -24,17 +24,18 @@ package sg.gaiaframework.assets
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	
-	import sg.gaiaframework.api.IRequestAsset;
+	import sg.gaiaframework.api.IByteArrayRequestAsset;
 	import sg.gaiaframework.utils.VarUtil;
 	
 	/**
 	 * @author Glenn Ko
 	 */
-	public class ByteArrayRequestAsset extends ByteArrayAsset implements IRequestAsset
+	public class ByteArrayRequestAsset extends ByteArrayAsset implements IByteArrayRequestAsset
 	{
 		
 		protected var _nodeVars:Object;
 		public static var BASE_VARS:Object;
+		protected var _method:String = URLRequestMethod.POST;
 		
 		protected static const DEFAULT_VAR_DELIMITER:String = ",";
 		
@@ -45,7 +46,7 @@ package sg.gaiaframework.assets
 		
 		override public function init():void {
 			super.init();
-			request.method = URLRequestMethod.POST;
+			request.method = _method;
 		}
 		
 		public function getRequest():URLRequest {
@@ -76,6 +77,7 @@ package sg.gaiaframework.assets
 		{
 			super.parseNode(page);
 			_preloadAsset = (_node.@preload == "true");
+			_method = _node.@method != undefined ? node.@method.toString().toLowerCase() == "get" ? URLRequestMethod.GET : URLRequestMethod.POST   : URLRequestMethod.POST;
 			
 			var vars:String = _node.@vars;
 			if (vars)   {
@@ -97,6 +99,16 @@ package sg.gaiaframework.assets
 		override public function toString():String
 		{
 			return "[ByteArrayRequestAsset] " + _id + " : " + _order + " ";
+		}
+		
+		public function get method():String { return _method; }
+		
+		public function set method(value:String):void 
+		{
+			value = value.toUpperCase();
+			if ( value != "POST" && value != "GET" ) throw new Error("Invalid URLRequestMethod assigned!");
+			_method = value;
+			if (request) request.method = value;
 		}
 	}
 }

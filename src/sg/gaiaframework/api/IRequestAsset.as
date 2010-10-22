@@ -11,6 +11,8 @@
 		
 		function sendAndLoad(vars:URLVariables):void;
 		function getRequest():URLRequest;
+		function set method(val:String):void;
+		function get method():String;
 	}
 	
 }

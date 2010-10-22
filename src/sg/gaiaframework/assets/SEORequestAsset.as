@@ -1,12 +1,12 @@
 ﻿package sg.gaiaframework.assets {
 
-	import com.gaiaframework.assets.XMLAsset;
+	import com.gaiaframework.assets.SEOAsset;
 	import com.gaiaframework.api.IPageAsset;
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	
-	import sg.gaiaframework.api.IXmlRequestAsset;
+	import sg.gaiaframework.api.ISeoRequestAsset;
 	import sg.gaiaframework.utils.VarUtil;
 	import flash.net.URLRequestMethod;
 	
@@ -14,15 +14,15 @@
 	* ...
 	* @author Glenn Ko
 	*/
-	public class XMLRequestAsset extends XMLAsset implements IXmlRequestAsset {
+	public class SEORequestAsset extends SEOAsset implements ISeoRequestAsset{
 		
 		protected var _nodeVars:Object;
 		public static var BASE_VARS:Object;
-		protected var _method:String = URLRequestMethod.POST;
 		
+		protected var _method:String = URLRequestMethod.POST;
 		protected static const DEFAULT_VAR_DELIMITER:String = ",";
 		
-		public function XMLRequestAsset() {
+		public function SEORequestAsset() {
 			super();
 		}
 		
@@ -35,16 +35,17 @@
 			request.method = _method;
 			isNoCache = true;
 		}
+		
+
 		public function sendAndLoad(vars:URLVariables):void {
 			if (xml!=null) {  // reload
 				abort();
 				init();
 			}
 			request.data = vars;  
+
 			load();
 		}
-		
-	
 		
 		protected function processVars(vars:URLVariables):URLVariables {
 			if  (_nodeVars != null)  VarUtil.mergeVarsWithBase(vars, _nodeVars);
@@ -56,9 +57,8 @@
 		{
 			super.parseNode(page);				
 			_preloadAsset = (_node.@preload == "true");
-			
 			_method = _node.@method!=undefined ? node.@method.toString().toLowerCase() == "get" ? URLRequestMethod.GET : URLRequestMethod.POST   : URLRequestMethod.POST;
-			var vars:String = node.@variables;
+			var vars:String = _node.@vars;
 			if (vars)   {
 				_nodeVars = { };
 				var attrib:XMLList = _node.attributes();

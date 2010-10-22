@@ -14,8 +14,8 @@
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	
+	import sg.gaiaframework.api.IDataRequestAsset;
 	import sg.gaiaframework.utils.VarUtil;
-	import sg.gaiaframework.api.IRequestAsset;
 	import sg.gaiaframework.api.IDataAsset;
 	
 	/**
@@ -23,7 +23,7 @@
 	* @author Glenn Ko
 	*/
 		
-	public class DataRequestAsset extends TextAsset implements IRequestAsset, IDataAsset
+	public class DataRequestAsset extends TextAsset implements IDataRequestAsset
 	{
 		protected var _dataVars:Object;
 		
@@ -31,6 +31,8 @@
 		protected var _nodeVars:Object;
 		
 		protected static const DEFAULT_VAR_DELIMITER:String = ",";
+		
+		protected var _method:String = URLRequestMethod.POST;
 		
 		public function DataRequestAsset()
 		{
@@ -41,6 +43,16 @@
 			return _dataVars; 
 		}
 		
+		public function get method():String { return _method; }
+		
+		public function set method(value:String):void 
+		{
+			value = value.toUpperCase();
+			if ( value != "POST" && value != "GET" ) throw new Error("Invalid URLRequestMethod assigned!");
+			_method = value;
+			if (request) request.method = value;
+		}
+		
 		public function getRequest():URLRequest {
 			return request;
 		}
@@ -49,7 +61,7 @@
 		{
 			super.init();
 			loader.dataFormat = URLLoaderDataFormat.VARIABLES;
-			request.method = URLRequestMethod.POST;
+			request.method = _method;
 			isNoCache = true;
 		}
 		
@@ -83,6 +95,7 @@
 		{
 			super.parseNode(page);
 			_preloadAsset = (_node.@preload == "true");
+			_method = _node.@method != undefined ? node.@method.toString().toLowerCase() == "get" ? URLRequestMethod.GET : URLRequestMethod.POST   : URLRequestMethod.POST;
 			
 			var vars:String = _node.@vars;
 			if (vars)   {
