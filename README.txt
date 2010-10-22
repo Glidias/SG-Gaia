@@ -18,6 +18,7 @@ http://www.gaiaflashframework.com/index.php/topic,2533.0.html
 
 API assets to send and load URLVariables.
 ------------------------------------------
+sg.gaiaframework.assets.SeoRequestAsset
 sg.gaiaframework.assets.XMLRequestAsset
 sg.gaiaframework.assets.DataRequestAsset
 sg.gaiaframework.assets.ByteArrayRequestAsset
