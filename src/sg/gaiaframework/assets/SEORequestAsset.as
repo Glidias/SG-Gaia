@@ -86,7 +86,7 @@
 		
 		override public function toString():String
 		{
-			return "[XMLRequestAsset] " + _id + " : " + _order + " -" + xml;
+			return "[SEORequestAsset] " + _id + " : " + _order + " -" + xml;
 		}
 		
 		public function get method():String { return _method; }
